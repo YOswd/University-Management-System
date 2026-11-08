@@ -3,8 +3,8 @@
 A Java 21, Spring Boot, PostgreSQL REST API. Start the application and database together with Docker Compose:
 
 ```powershell
-$env:POSTGRES_PASSWORD = "choose-a-database-password"
-$env:INITIAL_ADMIN_PASSWORD = "choose-an-initial-admin-password"
+$env:POSTGRES_PASSWORD = "database-password"
+$env:INITIAL_ADMIN_PASSWORD = "initial-admin-password"
 docker compose up --build
 ```
 

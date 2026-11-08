@@ -30,30 +30,30 @@ public class StudentServiceTests {
     void createStudentMapsSavedEntityToDto() {
         when(studentRepository.save(any(Student.class))).thenAnswer(invocation -> {
             Student student = invocation.getArgument(0);
-            student.setRoll(11);
+            student.setRoll(2207064);
             return student;
         });
 
-        StudentDTO created = studentService.createStudent(new StudentDTO(null, "Ada Student", "Science"));
+        StudentDTO created = studentService.createStudent(new StudentDTO(2207064, "Yasar", "CSE"));
 
-        assertEquals(new StudentDTO(11, "Ada Student", "Science"), created);
+        assertEquals(new StudentDTO(2207064, "Yasar", "CSE"), created);
         verify(studentRepository).save(any(Student.class));
     }
 
     @Test
     void updateStudentChangesFieldsAndPreservesExistingId() {
         Student existing = new Student();
-        existing.setRoll(17);
-        existing.setName("Old Name");
-        existing.setDept("Old Department");
-        when(studentRepository.findById(17)).thenReturn(Optional.of(existing));
+        existing.setRoll(2207064);
+        existing.setName("Yasar");
+        existing.setDept("CSE");
+        when(studentRepository.findById(2207064)).thenReturn(Optional.of(existing));
         when(studentRepository.save(existing)).thenReturn(existing);
 
-        StudentDTO updated = studentService.updateStudent(17,
-                new StudentDTO(99, "New Name", "Mathematics"));
+        StudentDTO updated = studentService.updateStudent(2207064,
+                new StudentDTO(2207065, "Wajih", "EEE"));
 
-        assertEquals(new StudentDTO(17, "New Name", "Mathematics"), updated);
-        assertEquals(17, existing.getRoll());
+        assertEquals(new StudentDTO(2207064, "Wajih", "EEE"), updated);
+        assertEquals(2207064, existing.getRoll());
         verify(studentRepository).save(existing);
     }
 }

@@ -35,27 +35,27 @@ public class TeacherServiceTests {
         });
 
         TeacherDTO created = teacherService.createTeacher(
-                new TeacherDTO(null, "Ada Teacher", "Professor", "Science"));
+                new TeacherDTO(21, "X", "Professor", "CSE"));
 
-        assertEquals(new TeacherDTO(21, "Ada Teacher", "Professor", "Science"), created);
+        assertEquals(new TeacherDTO(21, "X", "Professor", "CSE"), created);
         verify(teacherRepository).save(any(Teacher.class));
     }
 
     @Test
     void updateTeacherChangesFieldsAndPreservesExistingId() {
         Teacher existing = new Teacher();
-        existing.setId(27);
-        existing.setName("Old Name");
-        existing.setPos("Assistant");
-        existing.setDept("Old Department");
+        existing.setId(21);
+        existing.setName("X");
+        existing.setPos("Professor");
+        existing.setDept("CSE");
         when(teacherRepository.findById(27)).thenReturn(Optional.of(existing));
         when(teacherRepository.save(existing)).thenReturn(existing);
 
         TeacherDTO updated = teacherService.updateTeacher(27,
-                new TeacherDTO(99, "New Name", "Professor", "Mathematics"));
+                new TeacherDTO(99, "Y", "Professor", "EEE"));
 
-        assertEquals(new TeacherDTO(27, "New Name", "Professor", "Mathematics"), updated);
-        assertEquals(27, existing.getId());
+        assertEquals(new TeacherDTO(21, "Y", "Professor", "EEE"), updated);
+        assertEquals(21, existing.getId());
         verify(teacherRepository).save(existing);
     }
 }

@@ -40,14 +40,14 @@ class UniversityManagementSystemApplicationTests {
                 .with(admin)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"University Admin\"}"))
+                .content("{\"name\":\"R\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
                 .andReturn();
         String adminId = resourceId(createdAdmin);
         mockMvc.perform(get("/api/admins/{id}", adminId).with(admin))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("University Admin"));
+                .andExpect(jsonPath("$.name").value("R"));
         mockMvc.perform(put("/api/admins/{id}", adminId)
                 .with(admin)
                 .with(csrf())
@@ -62,19 +62,19 @@ class UniversityManagementSystemApplicationTests {
                 .with(admin)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Ada Student\",\"dept\":\"Science\"}"))
+                .content("{\"name\":\"Yasar\",\"dept\":\"CSE\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
                 .andReturn();
         String studentId = resourceId(createdStudent);
         mockMvc.perform(get("/api/students/{id}", studentId).with(admin))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Ada Student"));
+                .andExpect(jsonPath("$.name").value("Yasar"));
         mockMvc.perform(put("/api/students/update/{id}", studentId)
                 .with(admin)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Updated Student\",\"dept\":\"Mathematics\"}"))
+                .content("{\"name\":\"Updated Student\",\"dept\":\"CSE\"}"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("Updated Student"));
         mockMvc.perform(delete("/api/students/delete/{id}", studentId).with(admin).with(csrf()))
@@ -84,21 +84,21 @@ class UniversityManagementSystemApplicationTests {
                 .with(admin)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Ada Teacher\",\"pos\":\"Professor\",\"dept\":\"Science\"}"))
+                .content("{\"name\":\"X\",\"pos\":\"Professor\",\"dept\":\"CSE\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
                 .andReturn();
         String teacherId = resourceId(createdTeacher);
         mockMvc.perform(get("/api/teachers/{id}", teacherId).with(admin))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Ada Teacher"));
+                .andExpect(jsonPath("$.name").value("X"));
         mockMvc.perform(put("/api/teachers/update/{id}", teacherId)
                 .with(admin)
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"Updated Teacher\",\"pos\":\"Lecturer\",\"dept\":\"Arts\"}"))
+                .content("{\"name\":\"Y\",\"pos\":\"Lecturer\",\"dept\":\"CSE\"}"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.name").value("Updated Teacher"));
+                .andExpect(jsonPath("$.name").value("Y"));
         mockMvc.perform(delete("/api/teachers/delete/{id}", teacherId).with(admin).with(csrf()))
                 .andExpect(status().isNoContent());
     }
@@ -109,14 +109,26 @@ class UniversityManagementSystemApplicationTests {
                 .andExpect(status().isUnauthorized());
         mockMvc.perform(get("/api/admins").with(user("student").roles("STUDENT")))
                 .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/admins").with(user("teacher").roles("TEACHER")))
+                .andExpect(status().isForbidden());
         mockMvc.perform(get("/api/students").with(user("student").roles("STUDENT")))
                 .andExpect(status().isForbidden());
         mockMvc.perform(get("/api/teachers").with(user("student").roles("STUDENT")))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/teachers").with(user("teacher").roles("TEACHER")))
                 .andExpect(status().isOk());
         mockMvc.perform(get("/api/students").with(user("teacher").roles("TEACHER")))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(get("/api/students").with(user("admin").roles("ADMIN")))
+                .andExpect(status().isOk());
+        mockMvc.perform(get("/api/teachers").with(user("admin").roles("ADMIN")))
                 .andExpect(status().isOk());
         mockMvc.perform(delete("/api/students/delete/1")
                 .with(user("teacher").roles("TEACHER"))
+                .with(csrf()))
+                .andExpect(status().isForbidden());
+        mockMvc.perform(delete("/api/teachers/delete/1")
+                .with(user("student").roles("STUDENT"))
                 .with(csrf()))
                 .andExpect(status().isForbidden());
     }

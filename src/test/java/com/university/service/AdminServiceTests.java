@@ -34,9 +34,9 @@ public class AdminServiceTests {
             return admin;
         });
 
-        AdminDTO created = adminService.createAdmin(new AdminDTO(null, "Ada Admin"));
+        AdminDTO created = adminService.createAdmin(new AdminDTO(null, "R"));
 
-        assertEquals(new AdminDTO(1, "Ada Admin"), created);
+        assertEquals(new AdminDTO(1, "R"), created);
         verify(adminRepository).save(any(Admin.class));
     }
 
@@ -44,13 +44,13 @@ public class AdminServiceTests {
     void updateAdminChangesNameAndPreservesExistingId() {
         Admin existing = new Admin();
         existing.setId(7);
-        existing.setName("Old Name");
+        existing.setName("R");
         when(adminRepository.findById(7)).thenReturn(Optional.of(existing));
         when(adminRepository.save(existing)).thenReturn(existing);
 
-        AdminDTO updated = adminService.updateAdmin(7, new AdminDTO(99, "New Name"));
+        AdminDTO updated = adminService.updateAdmin(7, new AdminDTO(99, "Z"));
 
-        assertEquals(new AdminDTO(7, "New Name"), updated);
+        assertEquals(new AdminDTO(7, "Z"), updated);
         assertEquals(7, existing.getId());
         verify(adminRepository).save(existing);
     }
