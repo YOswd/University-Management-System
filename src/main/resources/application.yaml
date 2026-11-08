@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: university-management-system
+
+  docker:
+    compose:
+       enabled: false
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5464/university_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:2022}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+app:
+  security:
+    initial-admin:
+      username: ${INITIAL_ADMIN_USERNAME:admin}
+      password: ${INITIAL_ADMIN_PASSWORD:}
+
+server:
+  port: ${PORT:8080}
