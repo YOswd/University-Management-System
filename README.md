@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # University Management System
 
 A Java 21, Spring Boot, PostgreSQL REST API. Start the application and database together with Docker Compose:
@@ -63,6 +62,3 @@ Student JSON fields are `name` and `dept`; teacher fields are `name`, `pos`, and
 ## Local testing
 
 Run the test suite with `./mvnw test` (PowerShell: `.\mvnw.cmd test`). Tests use an in-memory H2 database and do not require Docker.
-=======
-# University-Management-System
->>>>>>> b5904f5432c67403b5f77e6296cd848656d5bf34

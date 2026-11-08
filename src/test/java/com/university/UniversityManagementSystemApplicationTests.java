@@ -27,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         "app.security.initial-admin.username=admin",
         "app.security.initial-admin.password=test-admin-password-123"
 })
+
 @AutoConfigureMockMvc
 class UniversityManagementSystemApplicationTests {
     @Autowired
